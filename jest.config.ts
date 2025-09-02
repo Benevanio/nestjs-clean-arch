@@ -1,7 +1,7 @@
-import { pathsToModuleNameMapper } from 'ts-jest'
-import { compilerOptions } from './tsconfig.json'
+const { pathsToModuleNameMapper } = require('ts-jest');
+const { compilerOptions } = require('./tsconfig.json');
 
-export default {
+module.exports = {
   moduleFileExtensions: ['js', 'json', 'ts'],
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
     prefix: '<rootDir>/',
@@ -13,4 +13,4 @@ export default {
   collectCoverageFrom: ['**/*.(t|j)s'],
   coverageDirectory: '../coverage',
   testEnvironment: 'node',
-}
+};
