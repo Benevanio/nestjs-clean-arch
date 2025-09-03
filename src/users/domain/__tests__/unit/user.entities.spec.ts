@@ -1,25 +1,34 @@
 import { faker } from '@faker-js/faker';
-import { UserEntity } from "../../entities/user.entity";
+import { UserEntity, UserProps } from "../../entities/user.entity";
 describe('UserEntity', () => {
-  it('should create a user with the given properties', () => {
-    const email = faker.internet.email();
-    const name = faker.person.fullName();
-    const password = faker.internet.password();
-    const createdAt = new Date();
+  let props: UserProps;
+  let sut: UserEntity;
 
-    const user = new UserEntity({
-      email,
-      name,
-      password,
-      createdAt,
-    });
+  beforeEach(() => {
+    props = {
+      email: faker.internet.email(),
+      name: faker.person.fullName(),
+      password: faker.internet.password(),
+      createdAt: new Date(),
+    };
+    sut = new UserEntity(props);
+  });
 
-    expect(user.props).toEqual({
-      email,
-      name,
-      password,
-      createdAt,
+  it('should initialize props correctly', () => {
+    expect(sut.props).toEqual({
+      email: props.email,
+      name: props.name,
+      password: props.password,
+      createdAt: props.createdAt,
     });
-    expect(user.props.createdAt).toBeInstanceOf(Date);
+    expect(sut.props.createdAt).toBeInstanceOf(Date);
+  });
+  it('should set createdAt to current date if not provided', () => {
+    sut = new UserEntity({
+      email: faker.internet.email(),
+      name: faker.person.fullName(),
+      password: faker.internet.password(),
+    });
+    expect(sut.props.createdAt).toBeInstanceOf(Date);
   });
 });
