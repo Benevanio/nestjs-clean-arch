@@ -21,4 +21,5 @@ describe('EnvConfigService', () => {
   it('should return environment variable', () => {
     process.env.TEST_VAR = 'test-value';
   });
+
 });
