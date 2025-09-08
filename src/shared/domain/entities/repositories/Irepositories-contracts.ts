@@ -1,9 +1,9 @@
 import { Entity } from "../entity";
 
 export interface IRepositoriesContracts<E extends Entity> {
+  insert(entity: E): Promise<void>;
   findById(id: string): Promise<E | null>;
   findAll(): Promise<E[]>;
-  create(entity: E): Promise<E>;
-  update(id: string, entity: E): Promise<E | null>;
-  delete(id: string): Promise<boolean>;
+  update(entity: E): Promise<void>;
+  delete(id: string): Promise<void>;
 }
