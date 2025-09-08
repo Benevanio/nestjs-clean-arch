@@ -5,13 +5,13 @@ type Props={
   name?: string;
   email?: string;
   password?: string;
-  createdAt?: Date;
+  createAt?: Date;
 }
 export function  UserDataBuilder(props: Props, p0: { name: any; }): UserProps{
 return{
   name: props.name ?? faker.person.fullName(),
   email: props.email ?? faker.internet.email(),
   password: props.password ?? faker.internet.password(),
-  createdAt: props.createdAt ?? new Date(),
+  createAt: props.createAt ?? new Date(),
 }
 }
