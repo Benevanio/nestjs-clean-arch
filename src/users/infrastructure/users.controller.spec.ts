@@ -15,8 +15,8 @@ describe('UsersController', () => {
             useValue: {
               findAll: jest.fn(),
               create: jest.fn(),
-              remove: jest.fn(),
-              update: jest.fn(),
+              remove: jest.fn().mockImplementation((id: string) => `This action removes a #${id} user`),
+              update: jest.fn().mockImplementation((id: string) => `This action updates a #${id} user`),
             },
           },
         ],
