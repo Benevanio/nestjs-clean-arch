@@ -10,6 +10,7 @@ export type UserProps = {
 
 
 export class UserEntity extends Entity<UserProps> {
+  [x: string]: any;
   constructor(public readonly props: UserProps, id?: string) {
     UserEntity.validate(props);
     super(props, id);

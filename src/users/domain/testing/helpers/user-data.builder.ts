@@ -7,7 +7,7 @@ type Props={
   password?: string;
   createdAt?: Date;
 }
-export function  UserDataBuilder(props:Props): UserProps{
+export function  UserDataBuilder(props: Props, p0: { name: any; }): UserProps{
 return{
   name: props.name ?? faker.person.fullName(),
   email: props.email ?? faker.internet.email(),
