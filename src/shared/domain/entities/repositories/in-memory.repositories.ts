@@ -1,3 +1,5 @@
+import { ValidatorFieldsInterface } from "@/shared/validators/validators-fields.interface";
+import { NotFoundError } from "../../error/not-found-error";
 import { Entity } from "../entity";
 import { IRepositoriesContracts } from "./Irepositories-contracts";
 
@@ -8,29 +10,40 @@ export abstract class InMemoryRepositories<E extends Entity> implements IReposit
       this.items.push(entity);
       return Promise.resolve();
     }
-    findById(id: string): Promise<E | null> {
-      this.items.find(item => item.id === id) || null;
-      return Promise.resolve(null);
-    }
-    findAll(): Promise<E[]> {
-      this.items;
-      return Promise.resolve(this.items);
-    }
-    update(entity: E): Promise<void> {
-      async function updateEntity() {
-        const index = this.items.findIndex(item => item.id === entity.id);
-        if (index !== -1) {
-          this.items[index] = entity;
-        }
+    async findById(id: string): Promise<E | null> {
+      const entity = this.items.find(item => item.id === id) || null;
+      if (!entity) {
+        throw new NotFoundError({ errors: ["Entity not found"] } as unknown as ValidatorFieldsInterface<any>);
       }
-      return updateEntity();
+      return entity;
     }
-    delete(id: string): Promise<void> {
-      async function deleteEntity() {
-        this.items = this.items.filter(item => item.id !== id);
+    async findAll(): Promise<E[]> {
+      if (this.items.length === 0) {
+        throw new NotFoundError({ errors: ["No entities found"] } as unknown as ValidatorFieldsInterface<any>);
       }
-      return deleteEntity();
-
+      return this.items;
     }
+    async update(entity: E): Promise<void> {
+      const index = this.items.findIndex(item => item.id === entity.id);
+      if (index === -1) {
+        throw new NotFoundError({ errors: ["Entity not found"] } as unknown as ValidatorFieldsInterface<any>);
+      }
+      this.items[index] = entity;
+    }
+    async delete(id: string): Promise<void> {
+      const entity = this.items.find(item => item.id === id);
+      if (!entity) {
+        throw new NotFoundError({ errors: ["Entity not found"] } as unknown as ValidatorFieldsInterface<any>);
+      }
+      this.items = this.items.filter(item => item.id !== id);
+    }
+    async _get(id: string): Promise<E | null> {
+      const _id = `${id}`;
 
+const entity = this.items.find(item => item.id === _id) || null;
+   if (!entity) {
+    throw new NotFoundError({ errors: ["Entity not found"] } as unknown as ValidatorFieldsInterface<any>);
+    }
+    return entity;
+    }
 }
