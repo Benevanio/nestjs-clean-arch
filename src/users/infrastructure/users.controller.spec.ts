@@ -7,13 +7,23 @@ describe('UsersController', () => {
   let module: TestingModule;
 
   beforeEach(async () => {
-    module = await Test.createTestingModule({
-      controllers: [UsersController],
-      providers: [UsersService],
-    }).compile();
+      module = await Test.createTestingModule({
+        controllers: [UsersController],
+        providers: [
+          {
+            provide: UsersService,
+            useValue: {
+              findAll: jest.fn(),
+              create: jest.fn(),
+              remove: jest.fn(),
+              update: jest.fn(),
+            },
+          },
+        ],
+      }).compile();
 
-    controller = module.get<UsersController>(UsersController);
-  });
+      controller = module.get<UsersController>(UsersController);
+    });
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
