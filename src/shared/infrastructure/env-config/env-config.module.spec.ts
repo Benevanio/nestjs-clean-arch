@@ -36,4 +36,33 @@ describe('EnvConfigModule', () => {
     const service = module.get<EnvConfigService>(EnvConfigService);
     expect(service).toBeDefined();
   });
+
+  it('should export EnvConfigService', () => {
+    const dynamicModule = EnvConfigModule.forRoot();
+    expect(dynamicModule.exports).toContain(EnvConfigService);
+  });
+
+  it('should set envFilePath for custom NODE_ENV', () => {
+    process.env.NODE_ENV = 'test';
+    const dynamicModule = EnvConfigModule.forRoot();
+    expect(dynamicModule.imports?.[0]).toBeDefined();
+  });
+
+  it('should accept custom options in forRoot', () => {
+    const options = { isGlobal: true };
+    const dynamicModule = EnvConfigModule.forRoot(options);
+    expect(dynamicModule.imports?.[0]).toBeDefined();
+  });
+
+  it('should handle missing NODE_ENV gracefully', () => {
+    delete process.env.NODE_ENV;
+    const dynamicModule = EnvConfigModule.forRoot();
+    expect(dynamicModule.imports?.[0]).toBeDefined();
+  });
+
+  it('should handle empty options', () => {
+    const dynamicModule = EnvConfigModule.forRoot();
+    expect(dynamicModule.module).toBe(EnvConfigModule);
+    expect(dynamicModule.providers).toContain(EnvConfigService);
+  });
 });

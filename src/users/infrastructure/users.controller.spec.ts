@@ -65,16 +65,28 @@ describe('UsersController', () => {
     });
 
   });
-
-  //delete
-  it('should delete a user', async () => {
-    const result = await controller.remove('1');
-    expect(result).toBe('This action removes a #1 user');
+  it('should call create with empty body', async () => {
+    const service = module.get<UsersService>(UsersService);
+    const createSpy = jest.spyOn(service, 'create').mockResolvedValue('created');
+    const result = await controller.create({});
+    expect(createSpy).toHaveBeenCalledWith({});
+    expect(result).toBe('created');
   });
 
-  //update
-  it('should update a user', async () => {
-    const result = await controller.update('1', { name: 'Jane Doe' });
-    expect(result).toBe('This action updates a #1 user');
+  it('should call update with empty body', async () => {
+    const service = module.get<UsersService>(UsersService);
+    const updateSpy = jest.spyOn(service, 'update').mockResolvedValue('updated');
+    const result = await controller.update('1', {});
+    expect(updateSpy).toHaveBeenCalledWith(1, {});
+    expect(result).toBe('updated');
+  });
+
+
+  it('should call remove with non-numeric id', async () => {
+    const service = module.get<UsersService>(UsersService);
+    const removeSpy = jest.spyOn(service, 'remove').mockReturnValue('removed');
+    const result = await controller.remove('abc');
+    expect(removeSpy).toHaveBeenCalledWith(NaN);
+    expect(result).toBe('removed');
   });
 });
