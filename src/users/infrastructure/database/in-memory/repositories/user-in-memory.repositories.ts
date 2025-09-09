@@ -5,7 +5,11 @@ import { UserEntity } from "@/users/domain/entities/user.entity";
 import { IUserRepository } from "@/users/domain/repositories/user.repositories";
 
 
-export class UserInMemoryRepository extends InMemoryRepositories<UserEntity> implements IUserRepository {
+export class UserInMemoryRepository extends InMemoryRepositories<UserEntity>
+implements IUserRepository {
+  search(input: any): Promise<any> {
+    throw new Error("Method not implemented.");
+  }
 
   findByEmail(email: string): Promise<UserEntity> {
     const entity = this.items.find(item => item.email === email);
