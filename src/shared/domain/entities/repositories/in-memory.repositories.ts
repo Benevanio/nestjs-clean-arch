@@ -4,7 +4,7 @@ import { Entity } from "../entity";
 import { IRepositoriesContracts } from "./Irepositories-contracts";
 
 export abstract class InMemoryRepositories<E extends Entity> implements IRepositoriesContracts<E> {
-    private items: E[] = [];
+    public items: E[] = [];
 
     insert(entity: E): Promise<void> {
       this.items.push(entity);
