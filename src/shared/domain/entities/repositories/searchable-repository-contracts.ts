@@ -137,7 +137,10 @@ export class SearchParams{
     this._filter = _filter;
   }
 }
-export interface ISearchableRepositoryContracts <E extends Entity, SearchInput, SearchOutput>
+export interface ISearchableRepositoryContracts <
+E extends Entity,
+SearchInput = SearchParams,
+SearchOutput = SearchResult<E>>
 extends IRepositoriesContracts<E> {
   search(input: SearchInput): Promise<SearchOutput>;
 }
