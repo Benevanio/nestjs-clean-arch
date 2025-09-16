@@ -5,6 +5,7 @@ import { ISearchableRepositoryContracts, SearchParams, SearchResult, SortDirecti
  export abstract class InMemorySearchableRepositories<E extends Entity>
  extends InMemoryRepositories<E>
  implements ISearchableRepositoryContracts<E, any, any> {
+   [x: string]: any;
 
 
  async  search(props: SearchParams): Promise<SearchResult<E>> {
@@ -31,17 +32,29 @@ import { ISearchableRepositoryContracts, SearchParams, SearchResult, SortDirecti
   |  null):
   Promise<E[]>;
 
-  protected abstract applySort(
+  protected applySort(
   items: E[],
   sort: string | undefined,
   sortDir: SortDirection | null
-): Promise<E[]>;
+): Promise<E[]> {
+  if (!sort || !this.sortableFields.includes(sort)) {
+    return Promise.resolve(items);
+  }
+  const sortedItems = [...items].sort((a, b) => {
+    if (a.props[sort] < b.props[sort]) {
+      return sortDir === 'asc' ? -1 : 1;
+    }
+    if (a.props[sort] > b.props[sort]) {
+      return sortDir === 'asc' ? 1 : -1;
+    }
+    return 0;
+  });
+  return Promise.resolve(sortedItems);
+  }
 
   protected abstract applyPaginate(
-  items: E[],
-  page: number,
-  perPage: number
-): Promise<E[]>;
-
-
+    items: E[],
+    page: number,
+    perPage: number
+  ): Promise<E[]>;
 }
