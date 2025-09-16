@@ -52,9 +52,13 @@ import { ISearchableRepositoryContracts, SearchParams, SearchResult, SortDirecti
   return Promise.resolve(sortedItems);
   }
 
-  protected abstract applyPaginate(
+  protected applyPaginate(
     items: E[],
-    page: number,
-    perPage: number
-  ): Promise<E[]>;
+    page: SearchParams['page'],
+    perPage: SearchParams['perPage'],
+  ): Promise<E[]> {
+    const start = (page - 1) * perPage;
+    const end = start + perPage;
+    return Promise.resolve(items.slice(start, end));
+  }
 }
