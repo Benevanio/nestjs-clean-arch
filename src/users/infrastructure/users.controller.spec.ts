@@ -14,7 +14,7 @@ describe('UsersController', () => {
             provide: UsersService,
             useValue: {
               findAll: jest.fn(),
-              create: jest.fn(),
+              create: jest.fn() as jest.Mock<Promise<any>, any>, // <-- Add explicit type here
               remove: jest.fn().mockImplementation((id: string) => `This action removes a #${id} user`),
               update: jest.fn().mockImplementation((id: string) => `This action updates a #${id} user`),
             },
