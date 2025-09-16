@@ -1,4 +1,3 @@
-
 import { Entity } from "../entity";
 import { IRepositoriesContracts } from "./Irepositories-contracts";
 
@@ -19,12 +18,12 @@ export class SearchParams{
   protected _sortDir: SortDirection | null;
   protected _filter: string | undefined;
 
-  constructor( props: SearchProps){
-    this._page = props.page;
-    this._perPage = props.perPage;
-    this._sort = props.sort ?? undefined;
-    this._sortDir = props.sortDir ?? null;
-    this._filter = props.filter ?? undefined;
+  constructor(props: SearchProps){
+    this.page = props.page;
+    this.perPage = props.perPage;
+    this.sort = props.sort ?? undefined;
+    this.sortDir = props.sortDir ?? null;
+    this.filter = props.filter ?? undefined;
   }
   get page(){
     return this._page;
