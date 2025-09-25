@@ -80,3 +80,34 @@ describe('InMemorySearchableRepositories', () => {
     expect(sorted).toEqual(entities);
   });
 });
+
+
+describe("ApplyPaginate method", () => {
+  let repo: TestRepo;
+  let items: TestEntity[];
+
+  beforeEach(() => {
+    repo = new TestRepo();
+    items = [
+      new TestEntity({ name: 'Alice', age: 30 }),
+      new TestEntity({ name: 'Bob', age: 25 }),
+      new TestEntity({ name: 'Carol', age: 35 }),
+      new TestEntity({ name: 'David', age: 28 }),
+      new TestEntity({ name: 'Eve', age: 22 }),
+    ];
+  });
+
+  it("should return the correct items for the first page", async () => {
+    const page = 1;
+    const perPage = 2;
+    const result = await repo._applyPaginate(items, page, perPage);
+    expect(result).toEqual([items[0], items[1]]);
+  });
+
+  it("should return the correct items for the second page", async () => {
+    const page = 2;
+    const perPage = 2;
+    const result = await repo._applyPaginate(items, page, perPage);
+    expect(result).toEqual([items[2], items[3]]);
+  });
+});
