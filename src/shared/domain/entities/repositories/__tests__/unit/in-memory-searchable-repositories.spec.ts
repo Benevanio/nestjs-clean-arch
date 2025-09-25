@@ -110,6 +110,14 @@ describe("ApplyPaginate method", () => {
     const result = await repo._applyPaginate(items, page, perPage);
     expect(result).toEqual([items[2], items[3]]);
   });
+
+  it("Should be aplly paginate and sort", async () => {
+    const sorted = await repo._applySort(items, 'age', 'asc');
+    const page = 2;
+    const perPage = 2;
+    const result = await repo._applyPaginate(sorted, page, perPage);
+    expect(result).toEqual([sorted[2], sorted[3]]);
+  });
 });
 
 
