@@ -111,3 +111,41 @@ describe("ApplyPaginate method", () => {
     expect(result).toEqual([items[2], items[3]]);
   });
 });
+
+
+describe("Search Method", () => {
+  let repo: TestRepo;
+  let items: TestEntity[];
+
+  beforeEach(() => {
+    repo = new TestRepo();
+    items = [
+      new TestEntity({ name: 'Alice', age: 30 }),
+      new TestEntity({ name: 'Bob', age: 25 }),
+      new TestEntity({ name: 'Carol', age: 35 }),
+      new TestEntity({ name: 'David', age: 28 }),
+      new TestEntity({ name: 'Eve', age: 22 }),
+    ];
+    repo.items = items;
+  });
+
+  it("should return all items when no filter is applied", async () => {
+    const params = new SearchParams({ page: 1, perPage: 10, sort: null, sortDir: null, filter: null });
+    const result = await repo.search(params);
+    expect(result.items).toEqual(items);
+    expect(result.total).toBe(5);
+    expect(result.currentPage).toBe(1);
+    expect(result.perPage).toBe(10);
+    expect(result.lastPage).toBe(1);
+  });
+
+  it("should filter items based on the filter parameter", async () => {
+    const params = new SearchParams({ page: 1, perPage: 10, sort: null, sortDir: null, filter: 'a' });
+    const result = await repo.search(params);
+    expect(result.items).toEqual([items[2], items[3]]);
+    expect(result.total).toBe(2);
+    expect(result.currentPage).toBe(1);
+    expect(result.perPage).toBe(10);
+    expect(result.lastPage).toBe(1);
+  });
+});
