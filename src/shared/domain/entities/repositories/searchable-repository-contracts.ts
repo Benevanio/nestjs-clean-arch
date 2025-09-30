@@ -8,7 +8,7 @@ export  type SearchProps <Filter = string> = {
   perPage: number;
   sort?: string;
   sortDir?: SortDirection |  null;
-  filter?: Filter | undefined;
+  filter?: Filter | null;
 };
 
 export class SearchResult<E extends Entity, Filter = string> {
@@ -64,19 +64,19 @@ export class SearchResult<E extends Entity, Filter = string> {
   }
 }
 
-export class SearchParams{
+export class SearchParams<Filter> {
   protected _page: number;
   protected _perPage: number;
   protected _sort: string | undefined;
   protected _sortDir: SortDirection | null;
-  protected _filter: string | undefined;
+  protected _filter: Filter | null;
 
-  constructor(props: SearchProps){
+  constructor(props: SearchProps<Filter>){
     this.page = props.page;
     this.perPage = props.perPage;
     this.sort = props.sort ?? undefined;
     this.sortDir = props.sortDir ?? null;
-    this.filter = props.filter ?? undefined;
+    this.filter = props.filter ?? null;
   }
   get page(){
     return this._page;
@@ -126,20 +126,17 @@ export class SearchParams{
     }
   }
 
-  get filter(){
+  get filter(): Filter | null{
     return this._filter;
   }
-  private set filter(value: string | undefined){
-    let _filter = value?.trim();
-    if(_filter === ""){
-      _filter = undefined;
-    }
-    this._filter = _filter;
+  private set filter(value: Filter|null){
+    this._filter = value =
+    value === undefined || (typeof value === "string" && value.trim() === "") ? null : value;
   }
 }
 export interface ISearchableRepositoryContracts <
 E extends Entity,
-SearchInput = SearchParams,
+SearchInput = SearchParams<string>,
 SearchOutput = SearchResult<E>>
 extends IRepositoriesContracts<E> {
   search(input: SearchInput): Promise<SearchOutput>;

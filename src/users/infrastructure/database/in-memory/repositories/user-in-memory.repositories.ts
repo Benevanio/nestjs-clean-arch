@@ -2,11 +2,11 @@ import { InMemoryRepositories } from "@/shared/domain/entities/repositories/in-m
 import { ConflictError } from "@/shared/domain/error/conflict-error";
 import { NotFoundError } from "@/shared/domain/error/not-found-error";
 import { UserEntity } from "@/users/domain/entities/user.entity";
-import { IUserRepository } from "@/users/domain/repositories/user.repositories";
+import { UserRepositories } from "@/users/domain/repositories/user.repositories";
 
 
 export class UserInMemoryRepository extends InMemoryRepositories<UserEntity>
-implements IUserRepository {
+  implements UserRepositories.Repository {
   search(input: any): Promise<any> {
     throw new Error("Method not implemented.");
   }

@@ -7,23 +7,23 @@ describe('UsersController', () => {
   let module: TestingModule;
 
   beforeEach(async () => {
-      module = await Test.createTestingModule({
-        controllers: [UsersController],
-        providers: [
-          {
-            provide: UsersService,
-            useValue: {
-              findAll: jest.fn(),
-              create: jest.fn() as jest.Mock<Promise<any>, any>, // <-- Add explicit type here
-              remove: jest.fn().mockImplementation((id: string) => `This action removes a #${id} user`),
-              update: jest.fn().mockImplementation((id: string) => `This action updates a #${id} user`),
-            },
+    module = await Test.createTestingModule({
+      controllers: [UsersController],
+      providers: [
+        {
+          provide: UsersService,
+          useValue: {
+            findAll: jest.fn(),
+            create: jest.fn() as jest.Mock<Promise<any>, any>, // <-- Add explicit type here
+            remove: jest.fn().mockImplementation((id: string) => `This action removes a #${id} user`),
+            update: jest.fn().mockImplementation((id: string) => `This action updates a #${id} user`),
           },
-        ],
-      }).compile();
+        },
+      ],
+    }).compile();
 
-      controller = module.get<UsersController>(UsersController);
-    });
+    controller = module.get<UsersController>(UsersController);
+  });
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
